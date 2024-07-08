@@ -54,6 +54,7 @@ export function Playlists() {
     setPlaylists(response)
 
     setIsLoading(false)
+    console.log(response[0])
   }, [handleGetPlaylistByUserId, user.uid])
 
   useEffect(() => {
@@ -115,7 +116,7 @@ export function Playlists() {
               >
                 <View className="w-20 h-20 bg-purple-600 rounded-xl overflow-hidden items-center justify-center">
                   <ImageBackground
-                    source={{ uri: item.imageUrl }}
+                    source={{ uri: item.artworURL }}
                     alt="artwork"
                     className="h-full w-full items-center justify-center"
                   />

@@ -56,12 +56,13 @@ export function NewPlaylist() {
       let imageUrl = ''
 
       Keyboard.dismiss()
+      setIsLoading(true)
+      const docRef = await firestore().collection('playlists').add({})
 
-      if (photo.length < 1 && user.photoURL) {
-        imageUrl = user.photoURL
+      if (photo.length < 1 && music.artwork) {
+        imageUrl = music.artwork
       } else {
-        setIsLoading(true)
-        const storageRef = storage().ref(`${user.uid}.jpg`)
+        const storageRef = storage().ref(`${docRef.id}.jpg`)
 
         const response = await fetch(photo)
         const blob = await response.blob()
@@ -72,18 +73,22 @@ export function NewPlaylist() {
 
         imageUrl = responseUrl
       }
-
-      const userDocRef = firestore().collection('users').doc(user.uid)
-
+      
       const data = {
-        name,
-        photoURL: imageUrl,
+        title: name,
+        artworkURL: imageUrl,
+        createdAt: new Date(),
+        createdFor: {
+          name: user.displayName,
+          id: user.uid,
+        },
+        musics: [music],
+        id: docRef.id,
       }
 
-      await userDocRef.update(data)
+      await docRef.set(data);
 
       setIsLoading(false)
-
       navigation.goBack()
     } catch (error) {
       setIsLoading(false)

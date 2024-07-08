@@ -522,7 +522,7 @@ export function useFirebaseServices() {
   ): Promise<PlaylistProps[]> => {
     const querySnapshot = await firestore()
       .collection('playlists')
-      .where('userId', '==', userId)
+      .where('createdFor.id', '==', userId)
       .get()
 
     const playlists = querySnapshot.docs.map(
