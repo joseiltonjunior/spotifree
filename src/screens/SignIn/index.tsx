@@ -82,8 +82,6 @@ export function SignIn() {
     try {
       const user = await handleFetchDataUser(uid)
 
-      await handleRequestPermissionNotifications(uid)
-
       if (!user && withGoogle) {
         const { displayName, email, photoURL } = withGoogle
 
@@ -115,6 +113,8 @@ export function SignIn() {
           }),
         )
       }
+
+      await handleRequestPermissionNotifications(uid)
 
       setIsLoading(false)
 
